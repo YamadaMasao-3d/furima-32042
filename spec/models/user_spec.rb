@@ -56,6 +56,11 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Email can't be blank")
       end
+      it "emailは＠がないと登録できない" do
+        @user.email = "fallon.krajcikyahoo.com"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Email is invalid")
+      end
       it "重複したemailが存在する場合登録できない" do
         @user.save
         another_user = FactoryBot.build(:user)
@@ -101,6 +106,16 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("First name can't be blank")
       end
+      it "last_nameが半角だと登録できない" do
+        @user.last_name = "nigihayami"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name is invalid. Input full-width characters.")
+      end
+      it "first_nameが半角だと登録できない" do
+        @user.first_name = "kohakunushi"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name is invalid. Input full-width characters.")
+      end
       it "last_name_kanaが空だと登録できない" do
         @user.last_name_kana = ""
         @user.valid?
@@ -111,12 +126,12 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
-      it "last_name_kanaが片仮名でないと登録できない" do
+      it "last_name_kanaが全角片仮名でないと登録できない" do
         @user.last_name_kana = "にぎはやみ"
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name kana is invalid. Input full-width katakana characters.")
       end
-      it "first_name_kanaが片仮名でないと登録できない" do
+      it "first_name_kanaが全角片仮名でないと登録できない" do
         @user.first_name_kana = "琥珀主"
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana is invalid. Input full-width katakana characters.")
