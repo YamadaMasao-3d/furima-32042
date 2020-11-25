@@ -1,7 +1,6 @@
 class ItemsController < ApplicationController
-
   def index
-    #@items = Item.all 初期画面へ今後表示するため表記しています。
+    @items = Item.includes(:user).order('created_at DESC')
   end
 
   def new
@@ -18,7 +17,7 @@ class ItemsController < ApplicationController
       redirect_to root_path(@item.user_id)
     else
       render :new
-    end  
+    end
   end
 
   private
@@ -26,6 +25,4 @@ class ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:image, :product_name, :product_price, :product_description, :category_id, :product_condition_id, :shipping_charge_id, :shipping_area_id, :days_to_ship_id).merge(user_id: current_user.id)
   end
-
-
 end
