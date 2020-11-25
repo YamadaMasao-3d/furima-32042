@@ -14,10 +14,12 @@ class Item < ApplicationRecord
   validates :product_description, length:{maximum:1000}
   validates :product_price, numericality:{ only_integer:true, with:/\A[-]?[0-9]+(\.[0-9]+)?\z/}
   validates_inclusion_of :product_price,in: 300..9999999
+    with_options numericality: { other_than: 0} do
+    validates :category_id
+    validates :product_condition_id
+    validates :shipping_charge_id
+    validates :shipping_area_id
+    validates :days_to_ship_id
+    end
   end
-  validates :category_id, presence: true, numericality: { other_than: 0}
-  validates :product_condition_id, presence: true, numericality: { other_than: 0}
-  validates :shipping_charge_id, presence: true, numericality: { other_than: 0}
-  validates :shipping_area_id, presence: true, numericality: { other_than: 0}
-  validates :days_to_ship_id, presence: true, numericality: { other_than: 0}
 end  

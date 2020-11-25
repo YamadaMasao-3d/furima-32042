@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
 
   def index
-    @items = Item.all
+    #@items = Item.all 初期画面へ今後表示するため表記しています。
   end
 
   def new
