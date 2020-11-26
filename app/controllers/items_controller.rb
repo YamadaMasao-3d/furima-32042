@@ -27,6 +27,10 @@ class ItemsController < ApplicationController
   end
 
   def edit
+    if current_user.id == @item.user_id
+    else
+       redirect_to new_user_session_path
+    end
   end
 
   def update
