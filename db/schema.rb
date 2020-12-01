@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_054937) do
+ActiveRecord::Schema.define(version: 2020_11_27_011317) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_054937) do
     t.string "product_name", null: false
     t.integer "product_price", null: false
     t.text "product_description", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.integer "category_id", null: false
     t.integer "product_condition_id", null: false
     t.integer "shipping_charge_id", null: false
@@ -46,6 +46,28 @@ ActiveRecord::Schema.define(version: 2020_11_24_054937) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_items_on_user_id"
+  end
+
+  create_table "purchase_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_purchase_histories_on_item_id"
+    t.index ["user_id"], name: "index_purchase_histories_on_user_id"
+  end
+
+  create_table "shipping_addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "postal_code", null: false
+    t.string "phone_number", null: false
+    t.text "municipality", null: false
+    t.text "address", null: false
+    t.text "building_name", null: false
+    t.bigint "purchase_history_id", null: false
+    t.integer "prefecture_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_history_id"], name: "index_shipping_addresses_on_purchase_history_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -67,4 +89,8 @@ ActiveRecord::Schema.define(version: 2020_11_24_054937) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "items", "users"
+  add_foreign_key "purchase_histories", "items"
+  add_foreign_key "purchase_histories", "users"
+  add_foreign_key "shipping_addresses", "purchase_histories"
 end

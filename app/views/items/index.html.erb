@@ -132,11 +132,16 @@
         <%= link_to item_path(item.id), method: :get do %>
         <div class='item-img-content'>
           <%= image_tag item.image, class: "item-img" %>
-
           <%# 商品が売れていればsold outを表示しましょう %>
-          <%#<div class='sold-out'>
+           <% @purchase_history.each do |purchase_history| %>
+          <% if item.id == purchase_history.item_id  %>
+
+          <div class='sold-out'>
             <span>Sold Out!!</span>
           </div>
+
+          <% end %>
+          <% end %>
           <%# //商品が売れていればsold outを表示しましょう %>
 
         </div>
