@@ -1,9 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :item_find, only: [:index]
+  before_action :redirect_top_page, only: [:index]
 
   def index
     @purchase_history = PurchaseHistory.includes(:item) 
-    @item = Item.find(params[:item_id])
     @buyer_info = BuyerInfo.new
     @purchase_history.each do |purchase_history|
       if @item.id == purchase_history.item_id 
@@ -38,6 +39,16 @@ class OrdersController < ApplicationController
       card: buyer_info_params[:token],   
       currency: 'jpy'                
     )
+  end
+
+  def redirect_top_page
+    if current_user.id == @item.user_id
+      redirect_to root_path
+    end
+  end
+
+  def item_find
+    @item = Item.find(params[:item_id])
   end
 
 end
