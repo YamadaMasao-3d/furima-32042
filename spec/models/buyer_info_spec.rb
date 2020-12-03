@@ -42,6 +42,14 @@ RSpec.describe BuyerInfo, type: :model do
         @buyer_info.phone_number = "09011000011"
         expect(@buyer_info).to be_valid
       end
+      it 'user_idを入力すると購入できる' do
+        @buyer_info.user = 1
+        expect(@buyer_info).to be_valid
+      end
+      it 'item_idを入力すると購入できる' do
+        @buyer_info.item = 1
+        expect(@buyer_info).to be_valid
+      end
     end
 
     context '出品物購入がうまくいかないとき' do
@@ -89,6 +97,16 @@ RSpec.describe BuyerInfo, type: :model do
         @buyer_info.phone_number = "0907544567"
         @buyer_info.valid?
         expect(@buyer_info.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'user_idが空だと購入できない' do
+        @buyer_info.user = nil
+        @buyer_info.valid?
+        expect(@buyer_info.errors.full_messages).to include("User can't be blank")
+      end
+      it 'item_idが空だと購入できない' do
+        @buyer_info.item = nil
+        @buyer_info.valid?
+        expect(@buyer_info.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
